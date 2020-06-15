@@ -73,6 +73,12 @@ abstract class ArchiveDownloader extends FileDownloader
                 if ($this->filesystem->isDirEmpty($this->config->get('vendor-dir'))) {
                     $this->filesystem->removeDirectory($this->config->get('vendor-dir'));
                 }
+
+                // Virtualbox shared drive workaround, not-ideal, but functional
+                if (file_exists('/vagrant')) {
+                    $this->io->writeError('    Vagrant Virtualbox shared drive workaround (sleeping 2s)...');
+                    sleep(2);
+                }
             } catch (\Exception $e) {
                 // clean up
                 $this->filesystem->removeDirectory($path);
